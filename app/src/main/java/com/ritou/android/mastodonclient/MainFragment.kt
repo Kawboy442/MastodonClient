@@ -33,12 +33,12 @@ class MainFragment: Fragment(R.layout.fragment_main) {
         binding = DataBindingUtil.bind(view)
         binding?.button?.setOnClickListener {
             binding?.button?.text = "clicked"
-            CoroutineScope(Dispatchers.IO).launch {
-                val response = api.fetchPublicTimeline().string()
-                Log.d(TAG, response)
-                withContext(Dispatchers.Main) {
-                    binding?.button?.text = response
+            CoroutineScope(Dispatchers.Main).launch {
+                val response = withContext(Dispatchers.IO) {
+                    api.fetchPublicTimeline().string()
                 }
+                Log.d(TAG, response)
+                binding?.button?.text = response
             }
         }
     }
