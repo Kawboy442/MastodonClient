@@ -7,6 +7,6 @@ data class Toot (
     @Json(name = "created_at") val createdAt: String,
     val sensitive: Boolean,
     val url: String,
-    val context: String,
+    val content: String,
     val account: Account
 )
