@@ -6,11 +6,14 @@ import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.ritou.android.mastodonclient.databinding.FragmentMainBinding
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
 
 class MainFragment: Fragment(R.layout.fragment_main) {
 
@@ -19,8 +22,13 @@ class MainFragment: Fragment(R.layout.fragment_main) {
         private const val API_BASE_URL = "https://androidbook2020.keiji.io"
     }
 
+    private val moshi = Moshi.Builder()
+        .add(KotlinJsonAdapterFactory())
+        .build()
+
     private val retrofit = Retrofit.Builder()
         .baseUrl(API_BASE_URL)
+        .addConverterFactory(MoshiConverterFactory.create(moshi))
         .build()
 
     private val api = retrofit.create(MastodonApi::class.java)
