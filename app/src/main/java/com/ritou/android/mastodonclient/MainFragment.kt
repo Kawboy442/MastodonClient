@@ -6,6 +6,9 @@ import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.ritou.android.mastodonclient.databinding.FragmentMainBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 
 class MainFragment: Fragment(R.layout.fragment_main) {
@@ -29,9 +32,11 @@ class MainFragment: Fragment(R.layout.fragment_main) {
         binding = DataBindingUtil.bind(view)
         binding?.button?.setOnClickListener {
             binding?.button?.text = "clicked"
-            val response = api.fetchPublicTimeline()
-                .execute().body()?.string()
-            Log.d(TAG, response)
+            CoroutineScope(Dispatchers.IO).launch {
+                val response = api.fetchPublicTimeline().string()
+                Log.d(TAG, response)
+                binding?.button?.text = response
+            }
         }
     }
 
