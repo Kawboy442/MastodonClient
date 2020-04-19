@@ -41,19 +41,24 @@ class MainFragment: Fragment(R.layout.fragment_main) {
         binding = DataBindingUtil.bind(view)
         binding?.button?.setOnClickListener {
             binding?.button?.text = "clicked"
-            CoroutineScope(Dispatchers.Main).launch {
-                val response = withContext(Dispatchers.IO) {
-                    api.fetchPublicTimeline().string()
-                }
-                Log.d(TAG, response)
-                binding?.button?.text = response
+            CoroutineScope(Dispatchers.IO).launch {
+                val tootList = api.fetchPublicTimeline()
+                showTootList(tootList)
             }
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-
         binding?.unbind()
+    }
+
+    private suspend fun showTootList(
+        tootList: List<Toot>
+    ) = withContext(Dispatchers.Main) {
+        val binding = binding ?: return@withContext
+        val accountNameList = tootList.map { it.account.displayName }
+        binding.button.text = accountNameList.joinToString {"\n"}
+
     }
 }
