@@ -23,7 +23,7 @@ class TootListFragment: Fragment(R.layout.fragment_toot_list) {
         private const val API_BASE_URL = "https://androidbook2020.keiji.io"
     }
 
-    private val binding: FragmentTootListBinding? = null
+    private var binding: FragmentTootListBinding? = null
 
     private val moshi = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
