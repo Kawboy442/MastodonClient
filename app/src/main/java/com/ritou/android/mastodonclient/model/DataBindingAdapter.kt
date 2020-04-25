@@ -1,4 +1,4 @@
-package com.ritou.android.mastodonclient
+package com.ritou.android.mastodonclient.model
 
 import android.widget.TextView
 import androidx.core.text.HtmlCompat

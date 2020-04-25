@@ -1,9 +1,11 @@
-package com.ritou.android.mastodonclient
+package com.ritou.android.mastodonclient.view.viewadapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.ritou.android.mastodonclient.R
+import com.ritou.android.mastodonclient.domain.Toot
 import com.ritou.android.mastodonclient.databinding.ListItemTootBinding
 
 class TootListAdapter(
@@ -22,11 +24,13 @@ class TootListAdapter(
             parent,
             false
         )
-        return ViewHolder(binding)
+        return ViewHolder(
+            binding
+        )
     }
 
     override fun onBindViewHolder(
-        holder: TootListAdapter.ViewHolder,
+        holder: ViewHolder,
         position: Int
     ) {
         holder.bind(tootList[position])

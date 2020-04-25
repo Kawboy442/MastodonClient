@@ -1,4 +1,4 @@
-package com.ritou.android.mastodonclient
+package com.ritou.android.mastodonclient.domain
 
 import com.squareup.moshi.Json
 

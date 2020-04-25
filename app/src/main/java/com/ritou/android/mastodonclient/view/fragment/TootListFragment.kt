@@ -1,11 +1,15 @@
-package com.ritou.android.mastodonclient
+package com.ritou.android.mastodonclient.view.fragment
 
 import android.os.Bundle
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.ritou.android.mastodonclient.R
+import com.ritou.android.mastodonclient.data.MastodonApi
+import com.ritou.android.mastodonclient.domain.Toot
 import com.ritou.android.mastodonclient.databinding.FragmentTootListBinding
+import com.ritou.android.mastodonclient.view.viewadapter.TootListAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.CoroutineScope
@@ -46,7 +50,11 @@ class TootListFragment: Fragment(R.layout.fragment_toot_list) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = TootListAdapter(layoutInflater, tootList)
+        adapter =
+            TootListAdapter(
+                layoutInflater,
+                tootList
+            )
 
         layoutManager = LinearLayoutManager(
             requireContext(),

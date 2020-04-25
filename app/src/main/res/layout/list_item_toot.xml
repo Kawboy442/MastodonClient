@@ -8,13 +8,13 @@
 
         <variable
             name="toot"
-            type="com.ritou.android.mastodonclient.Toot" />
+            type="com.ritou.android.mastodonclient.domain.Toot" />
     </data>
 
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".MainActivity">
+    tools:context=".view.activity.MainActivity">
 
     <TextView
         android:id="@+id/user_name"

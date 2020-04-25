@@ -1,7 +1,9 @@
-package com.ritou.android.mastodonclient
+package com.ritou.android.mastodonclient.view.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.ritou.android.mastodonclient.R
+import com.ritou.android.mastodonclient.view.fragment.TootListFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -10,7 +12,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         if (savedInstanceState == null) {
-            val fragment = TootListFragment()
+            val fragment =
+                TootListFragment()
             supportFragmentManager.beginTransaction()
                 .add(
                     R.id.fragment_container,

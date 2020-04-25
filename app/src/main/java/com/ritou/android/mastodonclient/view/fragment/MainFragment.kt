@@ -1,9 +1,12 @@
-package com.ritou.android.mastodonclient
+package com.ritou.android.mastodonclient.view.fragment
 
 import android.os.Bundle
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import com.ritou.android.mastodonclient.R
+import com.ritou.android.mastodonclient.data.MastodonApi
+import com.ritou.android.mastodonclient.domain.Toot
 import com.ritou.android.mastodonclient.databinding.FragmentMainBinding
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
