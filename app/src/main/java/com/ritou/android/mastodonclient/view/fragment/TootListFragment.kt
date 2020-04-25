@@ -82,6 +82,22 @@ class TootListFragment: Fragment(R.layout.fragment_toot_list) {
         binding?.unbind()
     }
 
+    private fun loadNext() {
+        coroutineScope.launch {
+            isLoading.set(true)
+
+            val tootListResponse = api.fetchPublicTimeline(
+                maxId = tootList.lastOrNull()?.id,
+                onlyMedia = true
+            )
+            tootList.addAll(tootListResponse.filter { !it.sensitive })
+            reloadTootList()
+
+            isLoading.set(false)
+            hasNext.set(tootListResponse.isNotEmpty())
+        }
+    }
+
     private suspend fun reloadTootList() = withContext(Dispatchers.Main) {
         adapter.notifyDataSetChanged()
     }
