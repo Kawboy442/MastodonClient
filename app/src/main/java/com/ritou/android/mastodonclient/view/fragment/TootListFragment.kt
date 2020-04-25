@@ -90,12 +90,7 @@ class TootListFragment: Fragment(R.layout.fragment_toot_list) {
             it.adapter = adapter
             it.addOnScrollListener(loadNextScrollListener)
         }
-
-        coroutineScope.launch {
-            val tootListResponse = api.fetchPublicTimeline(onlyMedia = true)
-            tootList.addAll(tootListResponse.filter { !it.sensitive })
-            reloadTootList()
-        }
+            loadNext()
     }
 
     override fun onDestroyView() {
