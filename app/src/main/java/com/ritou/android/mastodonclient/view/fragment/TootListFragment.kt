@@ -5,6 +5,7 @@ import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.ritou.android.mastodonclient.R
 import com.ritou.android.mastodonclient.data.MastodonApi
 import com.ritou.android.mastodonclient.domain.Toot
@@ -18,6 +19,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.util.concurrent.atomic.AtomicBoolean
 
 class TootListFragment: Fragment(R.layout.fragment_toot_list) {
 
