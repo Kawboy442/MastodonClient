@@ -45,6 +45,27 @@ class TootListFragment: Fragment(R.layout.fragment_toot_list) {
     private lateinit var adapter: TootListAdapter
     private lateinit var layoutManager: LinearLayoutManager
 
+    private var isLoading = AtomicBoolean()
+    private var hasNext = AtomicBoolean().apply { set(true) }
+
+    private val loadNextScrollListener = object : RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+
+            if (isLoading.get() || !hasNext.get()) {
+                return
+            }
+
+            val visibleItemCount = recyclerView.childCount
+            val totalItemCount = layoutManager.itemCount
+            val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+
+            if ((totalItemCount - visibleItemCount) <= firstVisibleItemPosition) {
+                loadNext()
+            }
+        }
+    }
+
     private var tootList = ArrayList<Toot>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
