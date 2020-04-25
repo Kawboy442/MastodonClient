@@ -88,6 +88,7 @@ class TootListFragment: Fragment(R.layout.fragment_toot_list) {
         bindingData.recyclerView.also {
             it.layoutManager = layoutManager
             it.adapter = adapter
+            it.addOnScrollListener(loadNextScrollListener)
         }
 
         coroutineScope.launch {
