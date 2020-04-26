@@ -70,7 +70,7 @@ class TootListFragment: Fragment(R.layout.fragment_toot_list) {
         }
     }
 
-    private var tootList = ArrayList<Toot>()
+    private var tootList = MutableLiveData<ArrayList<Toot>>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
