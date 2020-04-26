@@ -14,6 +14,7 @@ import com.ritou.android.mastodonclient.R
 import com.ritou.android.mastodonclient.data.MastodonApi
 import com.ritou.android.mastodonclient.domain.Toot
 import com.ritou.android.mastodonclient.databinding.FragmentTootListBinding
+import com.ritou.android.mastodonclient.domain.TootRepository
 import com.ritou.android.mastodonclient.view.viewadapter.TootListAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -32,16 +33,7 @@ class TootListFragment: Fragment(R.layout.fragment_toot_list) {
 
     private var binding: FragmentTootListBinding? = null
 
-    private val moshi = Moshi.Builder()
-        .add(KotlinJsonAdapterFactory())
-        .build()
-
-    private val retrofit = Retrofit.Builder()
-        .baseUrl(API_BASE_URL)
-        .addConverterFactory(MoshiConverterFactory.create(moshi))
-        .build()
-
-    private val api = retrofit.create(MastodonApi::class.java)
+    private val tootRepository = TootRepository(API_BASE_URL)
 
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
@@ -131,12 +123,10 @@ class TootListFragment: Fragment(R.layout.fragment_toot_list) {
 
             val tootListSnapshot = tootList.value ?: ArrayList()
 
-            val tootListResponse = withContext(Dispatchers.IO) {
-                api.fetchPublicTimeline(
-                    maxId = tootListSnapshot.lastOrNull()?.id,
-                    onlyMedia = true
-                )
-            }
+            val tootListResponse = tootRepository.fetchPublicTimeline(
+                maxId = tootListSnapshot.lastOrNull()?.id,
+                onlyMedia = true
+            )
             Log.d(TAG, "fetchPublicTimeline")
 
             tootListSnapshot.addAll(tootListResponse.filter { !it.sensitive })
