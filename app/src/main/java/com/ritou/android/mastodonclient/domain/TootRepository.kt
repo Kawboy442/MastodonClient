@@ -18,7 +18,7 @@ class TootRepository (
         .baseUrl(instanceUrl)
         .addConverterFactory(MoshiConverterFactory.create(moshi))
         .build()
-    
+
     private val api = retrofit.create(MastodonApi::class.java)
 
     suspend fun fetchPublicTimeline (
