@@ -14,10 +14,7 @@ import com.ritou.android.mastodonclient.databinding.FragmentTootListBinding
 import com.ritou.android.mastodonclient.view.viewadapter.TootListAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.atomic.AtomicBoolean
@@ -105,6 +102,12 @@ class TootListFragment: Fragment(R.layout.fragment_toot_list) {
         super.onDestroyView()
 
         binding?.unbind()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        coroutineScope.cancel()
     }
 
     private suspend fun showProgress() = withContext(Dispatchers.Main) {
