@@ -118,18 +118,9 @@ class TootListFragment: Fragment(R.layout.fragment_toot_list) {
         coroutineScope.cancel()
     }
 
-    private suspend fun showProgress() = withContext(Dispatchers.Main) {
-        binding?.swipeRefreshLayout?.isRefreshing = true
-    }
-
-    private suspend fun dismissProgress() = withContext(Dispatchers.Main) {
-        binding?.swipeRefreshLayout?.isRefreshing = false
-    }
-
     private fun loadNext() {
         lifecycleScope.launch {
             isLoading.set(true)
-            showProgress()
 
             val tootListResponse = withContext(Dispatchers.IO) {
                 api.fetchPublicTimeline(
@@ -147,7 +138,6 @@ class TootListFragment: Fragment(R.layout.fragment_toot_list) {
 
             isLoading.set(false)
             hasNext.set(tootListResponse.isNotEmpty())
-            dismissProgress()
             Log.d(TAG, "dismissProgress")
         }
     }
