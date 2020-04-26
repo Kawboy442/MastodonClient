@@ -149,8 +149,4 @@ class TootListFragment: Fragment(R.layout.fragment_toot_list) {
             Log.d(TAG, "dismissProgress")
         }
     }
-
-    private suspend fun reloadTootList() = withContext(Dispatchers.Main) {
-        adapter.notifyDataSetChanged()
-    }
 }
