@@ -6,6 +6,7 @@ import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -97,6 +98,10 @@ class TootListFragment: Fragment(R.layout.fragment_toot_list) {
             tootList.clear()
             loadNext()
         }
+
+        isLoading.observe(viewLifecycleOwner, Observer {
+            binding?.swipeRefreshLayout?.isRefreshing = it
+        })
 
         loadNext()
     }
