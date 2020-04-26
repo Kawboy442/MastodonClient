@@ -106,6 +106,14 @@ class TootListFragment: Fragment(R.layout.fragment_toot_list) {
         binding?.unbind()
     }
 
+    private suspend fun showProgress() = withContext(Dispatchers.Main) {
+        binding?.swipeRefreshLayout?.isRefreshing = true
+    }
+
+    private suspend fun dismissProgress() = withContext(Dispatchers.Main) {
+        binding?.swipeRefreshLayout?.isRefreshing = false
+    }
+
     private fun loadNext() {
         coroutineScope.launch {
             isLoading.set(true)
