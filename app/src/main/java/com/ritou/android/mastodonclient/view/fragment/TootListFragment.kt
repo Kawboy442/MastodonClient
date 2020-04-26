@@ -120,7 +120,7 @@ class TootListFragment: Fragment(R.layout.fragment_toot_list) {
 
     private fun loadNext() {
         lifecycleScope.launch {
-            isLoading.set(true)
+            isLoading.postValue(true)
 
             val tootListResponse = withContext(Dispatchers.IO) {
                 api.fetchPublicTimeline(
@@ -135,9 +135,9 @@ class TootListFragment: Fragment(R.layout.fragment_toot_list) {
 
             reloadTootList()
             Log.d(TAG, "reloadTootList")
-
-            isLoading.set(false)
+            
             hasNext.set(tootListResponse.isNotEmpty())
+            isLoading.postValue(false)
             Log.d(TAG, "dismissProgress")
         }
     }
