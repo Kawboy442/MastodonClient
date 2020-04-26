@@ -117,6 +117,7 @@ class TootListFragment: Fragment(R.layout.fragment_toot_list) {
     private fun loadNext() {
         coroutineScope.launch {
             isLoading.set(true)
+            showProgress()
 
             val tootListResponse = api.fetchPublicTimeline(
                 maxId = tootList.lastOrNull()?.id,
@@ -125,8 +126,9 @@ class TootListFragment: Fragment(R.layout.fragment_toot_list) {
             tootList.addAll(tootListResponse.filter { !it.sensitive })
             reloadTootList()
 
-            isLoading.set(false)
             hasNext.set(tootListResponse.isNotEmpty())
+            isLoading.set(false)
+            dismissProgress()
         }
     }
 
