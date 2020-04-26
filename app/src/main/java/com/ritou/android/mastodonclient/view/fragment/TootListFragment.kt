@@ -92,7 +92,12 @@ class TootListFragment: Fragment(R.layout.fragment_toot_list) {
             it.adapter = adapter
             it.addOnScrollListener(loadNextScrollListener)
         }
+        bindingData.swipeRefreshLayout.setOnRefreshListener {
+            tootList.clear()
             loadNext()
+        }
+
+        loadNext()
     }
 
     override fun onDestroyView() {
