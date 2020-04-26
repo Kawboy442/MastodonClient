@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ritou.android.mastodonclient.R
@@ -119,14 +120,16 @@ class TootListFragment: Fragment(R.layout.fragment_toot_list) {
     }
 
     private fun loadNext() {
-        coroutineScope.launch {
+        lifecycleScope.launch {
             isLoading.set(true)
             showProgress()
 
-            val tootListResponse = api.fetchPublicTimeline(
-                maxId = tootList.lastOrNull()?.id,
-                onlyMedia = true
-            )
+            val tootListResponse = withContext(Dispatchers.IO) {
+                api.fetchPublicTimeline(
+                    maxId = tootList.lastOrNull()?.id,
+                    onlyMedia = true
+                )
+            }
             Log.d(TAG, "fetchPublicTimeline")
 
             Thread.sleep(10 * 1000)
