@@ -1,6 +1,7 @@
 package com.ritou.android.mastodonclient.view.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -123,14 +124,20 @@ class TootListFragment: Fragment(R.layout.fragment_toot_list) {
                 maxId = tootList.lastOrNull()?.id,
                 onlyMedia = true
             )
+            Log.d(TAG, "fetchPublicTimeline")
+
             Thread.sleep(10 * 1000)
 
             tootList.addAll(tootListResponse.filter { !it.sensitive })
-            reloadTootList()
+            Log.d(TAG, "addAll")
 
-            hasNext.set(tootListResponse.isNotEmpty())
+            reloadTootList()
+            Log.d(TAG, "reloadTootList")
+
             isLoading.set(false)
+            hasNext.set(tootListResponse.isNotEmpty())
             dismissProgress()
+            Log.d(TAG, "dismissProgress")
         }
     }
 
