@@ -75,10 +75,14 @@ class TootListFragment: Fragment(R.layout.fragment_toot_list) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val tootListSnapshot = tootList.value ?: ArrayList<Toot>().also {
+            tootList.value = it
+        }
+
         adapter =
             TootListAdapter(
                 layoutInflater,
-                tootList
+                tootListSnapshot
             )
 
         layoutManager = LinearLayoutManager(
