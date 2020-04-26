@@ -132,8 +132,6 @@ class TootListFragment: Fragment(R.layout.fragment_toot_list) {
             }
             Log.d(TAG, "fetchPublicTimeline")
 
-            Thread.sleep(10 * 1000)
-
             tootList.addAll(tootListResponse.filter { !it.sensitive })
             Log.d(TAG, "addAll")
 
