@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -46,14 +47,15 @@ class TootListFragment: Fragment(R.layout.fragment_toot_list) {
     private lateinit var adapter: TootListAdapter
     private lateinit var layoutManager: LinearLayoutManager
 
-    private var isLoading = AtomicBoolean()
+    private var isLoading = MutableLiveData<Boolean>()
     private var hasNext = AtomicBoolean().apply { set(true) }
 
     private val loadNextScrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
 
-            if (isLoading.get() || !hasNext.get()) {
+            val isLoadingSnapshot = isLoading.value ?: return
+            if (isLoadingSnapshot || !hasNext.get()) {
                 return
             }
 
