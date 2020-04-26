@@ -99,7 +99,7 @@ class TootListFragment: Fragment(R.layout.fragment_toot_list) {
             it.addOnScrollListener(loadNextScrollListener)
         }
         bindingData.swipeRefreshLayout.setOnRefreshListener {
-            tootList.clear()
+            tootListSnapshot.clear()
             loadNext()
         }
 
@@ -129,19 +129,20 @@ class TootListFragment: Fragment(R.layout.fragment_toot_list) {
         lifecycleScope.launch {
             isLoading.postValue(true)
 
+            val tootListSnapshot = tootList.value ?: ArrayList()
+
             val tootListResponse = withContext(Dispatchers.IO) {
                 api.fetchPublicTimeline(
-                    maxId = tootList.lastOrNull()?.id,
+                    maxId = tootListSnapshot.lastOrNull()?.id,
                     onlyMedia = true
                 )
             }
             Log.d(TAG, "fetchPublicTimeline")
 
-            tootList.addAll(tootListResponse.filter { !it.sensitive })
+            tootListSnapshot.addAll(tootListResponse.filter { !it.sensitive })
             Log.d(TAG, "addAll")
 
-            reloadTootList()
-            Log.d(TAG, "reloadTootList")
+            tootList.postValue(tootListSnapshot)
             
             hasNext.set(tootListResponse.isNotEmpty())
             isLoading.postValue(false)
