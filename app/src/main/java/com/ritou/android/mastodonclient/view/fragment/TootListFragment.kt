@@ -123,6 +123,8 @@ class TootListFragment: Fragment(R.layout.fragment_toot_list) {
                 maxId = tootList.lastOrNull()?.id,
                 onlyMedia = true
             )
+            Thread.sleep(10 * 1000)
+
             tootList.addAll(tootListResponse.filter { !it.sensitive })
             reloadTootList()
 
