@@ -1,7 +1,6 @@
 package com.ritou.android.mastodonclient.view.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -14,12 +13,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ritou.android.mastodonclient.R
 import com.ritou.android.mastodonclient.domain.Toot
 import com.ritou.android.mastodonclient.databinding.FragmentTootListBinding
-import com.ritou.android.mastodonclient.domain.TootRepository
 import com.ritou.android.mastodonclient.view.viewadapter.TootListAdapter
 import com.ritou.android.mastodonclient.view.viewmodel.TootListViewModel
 import com.ritou.android.mastodonclient.view.viewmodel.TootListViewModelFactory
 import kotlinx.coroutines.*
-import java.util.concurrent.atomic.AtomicBoolean
 
 class TootListFragment: Fragment(R.layout.fragment_toot_list) {
 
