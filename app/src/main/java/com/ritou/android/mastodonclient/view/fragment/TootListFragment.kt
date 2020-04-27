@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
@@ -15,6 +16,8 @@ import com.ritou.android.mastodonclient.domain.Toot
 import com.ritou.android.mastodonclient.databinding.FragmentTootListBinding
 import com.ritou.android.mastodonclient.domain.TootRepository
 import com.ritou.android.mastodonclient.view.viewadapter.TootListAdapter
+import com.ritou.android.mastodonclient.view.viewmodel.TootListViewModel
+import com.ritou.android.mastodonclient.view.viewmodel.TootListViewModelFactory
 import kotlinx.coroutines.*
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -28,22 +31,25 @@ class TootListFragment: Fragment(R.layout.fragment_toot_list) {
 
     private var binding: FragmentTootListBinding? = null
 
-    private val tootRepository = TootRepository(API_BASE_URL)
-
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
     private lateinit var adapter: TootListAdapter
     private lateinit var layoutManager: LinearLayoutManager
 
-    private var isLoading = MutableLiveData<Boolean>()
-    private var hasNext = AtomicBoolean().apply { set(true) }
+    private val viewModel: TootListViewModel by viewModels {
+        TootListViewModelFactory(
+            API_BASE_URL,
+            lifecycleScope,
+            requireContext()
+        )
+    }
 
     private val loadNextScrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
 
-            val isLoadingSnapshot = isLoading.value ?: return
-            if (isLoadingSnapshot || !hasNext.get()) {
+            val isLoadingSnapshot = viewModel.isLoading.value ?: return
+            if (isLoadingSnapshot || !viewModel.hasNext) {
                 return
             }
 
@@ -52,7 +58,7 @@ class TootListFragment: Fragment(R.layout.fragment_toot_list) {
             val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
 
             if ((totalItemCount - visibleItemCount) <= firstVisibleItemPosition) {
-                loadNext()
+                viewModel.loadNext()
             }
         }
     }
@@ -62,8 +68,8 @@ class TootListFragment: Fragment(R.layout.fragment_toot_list) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val tootListSnapshot = tootList.value ?: ArrayList<Toot>().also {
-            tootList.value = it
+        val tootListSnapshot = viewModel.tootList.value ?: ArrayList<Toot>().also {
+            viewModel.tootList.value = it
         }
 
         adapter =
@@ -86,18 +92,18 @@ class TootListFragment: Fragment(R.layout.fragment_toot_list) {
             it.addOnScrollListener(loadNextScrollListener)
         }
         bindingData.swipeRefreshLayout.setOnRefreshListener {
-            tootListSnapshot.clear()
-            loadNext()
+            viewModel.clear()
+            viewModel.loadNext()
         }
 
-        isLoading.observe(viewLifecycleOwner, Observer {
+        viewModel.isLoading.observe(viewLifecycleOwner, Observer {
             binding?.swipeRefreshLayout?.isRefreshing = it
         })
-        tootList.observe(viewLifecycleOwner, Observer {
+        viewModel.tootList.observe(viewLifecycleOwner, Observer {
             adapter.notifyDataSetChanged()
         })
 
-        loadNext()
+        viewModel.loadNext()
     }
 
     override fun onDestroyView() {
