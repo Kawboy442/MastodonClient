@@ -1,8 +1,7 @@
 package com.ritou.android.mastodonclient.view.viewmodel
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.*
 import com.ritou.android.mastodonclient.domain.Toot
 import com.ritou.android.mastodonclient.domain.TootRepository
 import kotlinx.coroutines.CoroutineScope
@@ -12,7 +11,7 @@ class TootListViewModel(
     instanceUrl: String,
     private val coroutineScope: CoroutineScope,
     application: Application
-): AndroidViewModel(application) {
+): AndroidViewModel(application), LifecycleObserver {
 
     private val tootRepository = TootRepository(instanceUrl)
 
@@ -20,6 +19,11 @@ class TootListViewModel(
     var hasNext = true
 
     val tootList = MutableLiveData<ArrayList<Toot>>()
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
+    fun onCreate() {
+        loadNext()
+    }
 
     fun clear() {
         val tootListSnapshot = tootList.value ?: return
