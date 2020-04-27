@@ -11,16 +11,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ritou.android.mastodonclient.R
-import com.ritou.android.mastodonclient.data.MastodonApi
 import com.ritou.android.mastodonclient.domain.Toot
 import com.ritou.android.mastodonclient.databinding.FragmentTootListBinding
 import com.ritou.android.mastodonclient.domain.TootRepository
 import com.ritou.android.mastodonclient.view.viewadapter.TootListAdapter
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.*
-import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.atomic.AtomicBoolean
 
 class TootListFragment: Fragment(R.layout.fragment_toot_list) {
