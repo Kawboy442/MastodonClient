@@ -117,27 +117,4 @@ class TootListFragment: Fragment(R.layout.fragment_toot_list) {
 
         coroutineScope.cancel()
     }
-
-    private fun loadNext() {
-        lifecycleScope.launch {
-            isLoading.postValue(true)
-
-            val tootListSnapshot = tootList.value ?: ArrayList()
-
-            val tootListResponse = tootRepository.fetchPublicTimeline(
-                maxId = tootListSnapshot.lastOrNull()?.id,
-                onlyMedia = true
-            )
-            Log.d(TAG, "fetchPublicTimeline")
-
-            tootListSnapshot.addAll(tootListResponse.filter { !it.sensitive })
-            Log.d(TAG, "addAll")
-
-            tootList.postValue(tootListSnapshot)
-            
-            hasNext.set(tootListResponse.isNotEmpty())
-            isLoading.postValue(false)
-            Log.d(TAG, "dismissProgress")
-        }
-    }
 }
