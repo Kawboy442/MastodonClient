@@ -50,9 +50,8 @@ class TootListViewModel(
 
             val tootListSnapshot = tootList.value ?: ArrayList()
             val maxId = tootListSnapshot.lastOrNull()?.id
-            val tootListResponse = tootRepository.fetchPublicTimeline(
-                maxId = maxId,
-                onlyMedia = true
+            val tootListResponse = tootRepository.feachHomeTimeline(
+                maxId = maxId
             )
             tootListSnapshot.addAll(tootListResponse)
             tootList.postValue(tootListSnapshot)
