@@ -31,7 +31,12 @@ class TootListViewModel(
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun onCreate() {
-        loadNext()
+        coroutineScope.launch {
+            userCredential = userCredentialRepository
+                .find(instanceUrl, username) ?: return@launch
+            tootRepository = TootRepository(userCredential)
+            loadNext()
+        }
     }
 
     fun clear() {
