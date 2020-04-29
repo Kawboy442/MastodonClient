@@ -30,4 +30,13 @@ class TootRepository (
             onlyMedia = onlyMedia
         )
     }
+
+    suspend fun feachHomeTimeline(
+        maxId: String?
+    ) = withContext(Dispatchers.IO) {
+        api.feachHomeTimeline(
+            accessToken = "Bearer ${userCredential.accessToken}",
+            maxId = maxId
+        )
+    }
 }
