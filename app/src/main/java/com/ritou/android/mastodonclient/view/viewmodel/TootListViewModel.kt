@@ -4,16 +4,25 @@ import android.app.Application
 import androidx.lifecycle.*
 import com.ritou.android.mastodonclient.domain.Toot
 import com.ritou.android.mastodonclient.domain.TootRepository
+import com.ritou.android.mastodonclient.domain.UserCredential
+import com.ritou.android.mastodonclient.domain.UserCredentialRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 class TootListViewModel(
-    instanceUrl: String,
+    private val instanceUrl: String,
+    private val username: String,
     private val coroutineScope: CoroutineScope,
     application: Application
 ): AndroidViewModel(application), LifecycleObserver {
 
-    private val tootRepository = TootRepository(instanceUrl)
+    private val userCredentialRepository = UserCredentialRepository(
+        application
+    )
+
+    private lateinit var tootRepository: TootRepository
+
+    private lateinit var userCredential: UserCredential
 
     val isLoading = MutableLiveData<Boolean>()
     var hasNext = true
