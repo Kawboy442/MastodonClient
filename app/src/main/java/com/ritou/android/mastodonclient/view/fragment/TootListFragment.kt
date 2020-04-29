@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.ritou.android.mastodonclient.BuildConfig
 import com.ritou.android.mastodonclient.R
 import com.ritou.android.mastodonclient.domain.Toot
 import com.ritou.android.mastodonclient.databinding.FragmentTootListBinding
@@ -22,8 +23,6 @@ class TootListFragment: Fragment(R.layout.fragment_toot_list) {
 
     companion object {
         val TAG = TootListFragment::class.java.simpleName
-
-        private const val API_BASE_URL = "https://androidbook2020.keiji.io"
     }
 
     private var binding: FragmentTootListBinding? = null
@@ -35,7 +34,7 @@ class TootListFragment: Fragment(R.layout.fragment_toot_list) {
 
     private val viewModel: TootListViewModel by viewModels {
         TootListViewModelFactory(
-            API_BASE_URL,
+            BuildConfig.INSTANCE_URL,
             lifecycleScope,
             requireContext()
         )
